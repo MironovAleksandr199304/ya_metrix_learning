@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Тренировочный сайт с Яндекс Метрикой</title>
+  <style>
+    :root {
+      --bg: #f4f6fb;
+      --primary: #2b6cb0;
+      --accent: #f6ad55;
+      --text: #1a202c;
+      --muted: #4a5568;
+      --card: #ffffff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: var(--card);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    }
+
+    .container {
+      width: min(1200px, 94%);
+      margin: 0 auto;
+      padding: 0 12px;
+    }
+
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--text);
+      padding: 8px 12px;
+      border-radius: 8px;
+      transition: background 0.2s ease, color 0.2s ease;
+      font-weight: 600;
+    }
+
+    nav a:hover, nav a:focus {
+      background: var(--primary);
+      color: #fff;
+      outline: none;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: none;
+      cursor: pointer;
+      font-weight: 700;
+      padding: 10px 16px;
+      border-radius: 10px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 6px 16px rgba(43, 108, 176, 0.2);
+    }
+
+    .btn-secondary {
+      background: var(--accent);
+      color: #1a1a1a;
+      box-shadow: 0 6px 16px rgba(246, 173, 85, 0.25);
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    main {
+      padding: 32px 0 48px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, rgba(43, 108, 176, 0.1), rgba(246, 173, 85, 0.15));
+      border-radius: 18px;
+      padding: 36px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.05);
+      margin-bottom: 28px;
+    }
+
+    .hero h1 {
+      margin-top: 0;
+      font-size: clamp(28px, 4vw, 40px);
+      line-height: 1.2;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .card {
+      background: var(--card);
+      padding: 20px;
+      border-radius: 14px;
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.06);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      height: 100%;
+    }
+
+    .section-title {
+      margin: 0 0 12px;
+      font-size: 22px;
+      color: var(--primary);
+    }
+
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .block {
+      margin-top: 32px;
+    }
+
+    footer {
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 24px 0;
+      margin-top: 36px;
+    }
+
+    footer .contact {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 2000;
+    }
+
+    .modal {
+      background: var(--card);
+      padding: 24px;
+      border-radius: 12px;
+      width: min(420px, 100%);
+      box-shadow: 0 18px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .modal h2 { margin-top: 0; }
+
+    .modal form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    label {
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    input, textarea {
+      padding: 10px 12px;
+      border: 1px solid #d0d7e2;
+      border-radius: 8px;
+      font-size: 15px;
+      width: 100%;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 90px;
+    }
+
+    .modal .actions {
+      justify-content: flex-end;
+    }
+
+    @media (max-width: 720px) {
+      nav ul {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .top-bar {
+        justify-content: center;
+      }
+
+      .hero {
+        padding: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container top-bar">
+      <nav aria-label="Основное меню">
+        <ul>
+          <li><a href="#products">Товары</a></li>
+          <li><a href="#services">Услуги</a></li>
+          <li><a href="#contacts">Контакты</a></li>
+          <li><a href="#order">Заказать</a></li>
+          <li><a href="#feedback">Оставить отзыв</a></li>
+        </ul>
+      </nav>
+      <div class="actions">
+        <button class="btn btn-secondary" data-modal="register">Регистрация</button>
+        <button class="btn btn-primary" data-modal="login">Вход</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero" id="main">
+      <h1>Добро пожаловать на тренировочный сайт</h1>
+      <p>Этот сайт создан для практики с яндекс метрикой. Он является тренировочным и не несет никакой ценности.</p>
+    </section>
+
+    <section id="products" class="block">
+      <h2 class="section-title">Товары</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Гаджеты</h3>
+          <p>Описание популярных гаджетов и примеры аналитики пользовательского поведения.</p>
+          <a class="cta" href="#order">Узнать больше →</a>
+        </div>
+        <div class="card">
+          <h3>Аксессуары</h3>
+          <p>Отображение ключевых кликов и построение воронок для небольших каталогов.</p>
+          <a class="cta" href="#order">Посмотреть идеи →</a>
+        </div>
+        <div class="card">
+          <h3>Домашние товары</h3>
+          <p>Тестовые карточки для отслеживания скроллов и глубины просмотра на лендинге.</p>
+          <a class="cta" href="#order">Выбрать →</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="services" class="block">
+      <h2 class="section-title">Услуги</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Настройка метрик</h3>
+          <p>Рабочие примеры целей, событий и проверки корректности отправки.</p>
+        </div>
+        <div class="card">
+          <h3>Разбор отчетов</h3>
+          <p>Раздел с тестовыми данными для тренировки сегментации и фильтрации.</p>
+        </div>
+        <div class="card">
+          <h3>План экспериментов</h3>
+          <p>Шаблон для планирования A/B тестов и фиксации основных гипотез.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="order" class="block">
+      <h2 class="section-title">Заказать</h2>
+      <div class="card">
+        <p>Оставьте заявку, чтобы протестировать форму отправки и обработку конверсий.</p>
+        <form>
+          <label for="order-name">Имя</label>
+          <input type="text" id="order-name" name="order-name" placeholder="Ваше имя" required>
+
+          <label for="order-email">Email</label>
+          <input type="email" id="order-email" name="order-email" placeholder="you@example.com" required>
+
+          <label for="order-message">Комментарий</label>
+          <textarea id="order-message" name="order-message" placeholder="Что хотите заказать?" required></textarea>
+
+          <button class="btn btn-primary" type="submit">Отправить заявку</button>
+        </form>
+      </div>
+    </section>
+
+    <section id="feedback" class="block">
+      <h2 class="section-title">Оставить отзыв</h2>
+      <div class="card">
+        <p>Поделитесь впечатлениями, чтобы потренироваться в обработке обратной связи.</p>
+        <form>
+          <label for="feedback-name">Имя</label>
+          <input type="text" id="feedback-name" name="feedback-name" placeholder="Ваше имя" required>
+
+          <label for="feedback-text">Отзыв</label>
+          <textarea id="feedback-text" name="feedback-text" placeholder="Ваше мнение" required></textarea>
+
+          <button class="btn btn-secondary" type="submit">Отправить отзыв</button>
+        </form>
+      </div>
+    </section>
+
+    <section id="contacts" class="block">
+      <h2 class="section-title">Контакты</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Офис</h3>
+          <p>Виртуальный адрес для практики построения маршрутов и отслеживания кликов.</p>
+        </div>
+        <div class="card">
+          <h3>Поддержка</h3>
+          <p>Используйте эту секцию, чтобы тестировать показатели времени на странице и глубины просмотра.</p>
+        </div>
+        <div class="card">
+          <h3>Чаты</h3>
+          <p>Кнопки и ссылки для моделирования сценариев обращения в чат и обратного звонка.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container contact">
+      <strong>Контакты:</strong>
+      <span>тел.: +7999999999</span>
+      <span>email: test@email.ru</span>
+    </div>
+  </footer>
+
+  <div class="modal-backdrop" id="modal-register" role="dialog" aria-modal="true" aria-labelledby="register-title">
+    <div class="modal">
+      <h2 id="register-title">Регистрация</h2>
+      <form>
+        <label for="reg-name">Имя</label>
+        <input type="text" id="reg-name" name="reg-name" placeholder="Ваше имя" required>
+
+        <label for="reg-email">Email</label>
+        <input type="email" id="reg-email" name="reg-email" placeholder="you@example.com" required>
+
+        <label for="reg-password">Пароль</label>
+        <input type="password" id="reg-password" name="reg-password" placeholder="Пароль" required>
+
+        <div class="actions">
+          <button class="btn" type="button" data-close>Отмена</button>
+          <button class="btn btn-primary" type="submit">Создать аккаунт</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="modal-login" role="dialog" aria-modal="true" aria-labelledby="login-title">
+    <div class="modal">
+      <h2 id="login-title">Вход</h2>
+      <form>
+        <label for="login-email">Email</label>
+        <input type="email" id="login-email" name="login-email" placeholder="you@example.com" required>
+
+        <label for="login-password">Пароль</label>
+        <input type="password" id="login-password" name="login-password" placeholder="Пароль" required>
+
+        <div class="actions">
+          <button class="btn" type="button" data-close>Отмена</button>
+          <button class="btn btn-secondary" type="submit">Войти</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const modalTriggers = document.querySelectorAll('[data-modal]');
+    const backdrops = {
+      register: document.getElementById('modal-register'),
+      login: document.getElementById('modal-login')
+    };
+
+    const closeButtons = document.querySelectorAll('[data-close]');
+
+    function openModal(name) {
+      const backdrop = backdrops[name];
+      if (backdrop) {
+        backdrop.style.display = 'flex';
+      }
+    }
+
+    function closeModal() {
+      Object.values(backdrops).forEach((backdrop) => {
+        backdrop.style.display = 'none';
+      });
+    }
+
+    modalTriggers.forEach((btn) => {
+      btn.addEventListener('click', () => openModal(btn.dataset.modal));
+    });
+
+    closeButtons.forEach((btn) => btn.addEventListener('click', closeModal));
+
+    window.addEventListener('click', (event) => {
+      const target = event.target;
+      if (target.classList.contains('modal-backdrop')) {
+        closeModal();
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        closeModal();
+      }
+    });
+  </script>
+</body>
+</html>
